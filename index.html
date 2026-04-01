@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ShotSage — Every Shot Deserves Sage Advice</title>
+
+<!-- OG / Social sharing meta -->
+<meta name="description" content="ShotSage is the AI caddie that knows the course, reads the conditions, and delivers tour-level strategy — right in your pocket. And soon, on your wrist.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://shotsage.ai">
+<meta property="og:title" content="ShotSage — Every Shot Deserves Sage Advice">
+<meta property="og:description" content="AI caddie intelligence for every golfer. Real-time GPS, voice-powered strategy, and smart practice plans — on your phone and soon your wrist.">
+<meta property="og:image" content="https://shotsage.ai/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="ShotSage">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ShotSage — Every Shot Deserves Sage Advice">
+<meta name="twitter:description" content="AI caddie intelligence for every golfer. Real-time GPS, voice-powered strategy, and smart practice plans.">
+<meta name="twitter:image" content="https://shotsage.ai/og-image.png">
+<meta name="theme-color" content="#0a0f0a">
+
+<!-- Favicon (inline SVG) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0f0a'/%3E%3Ccircle cx='32' cy='30' r='16' fill='none' stroke='%2334d399' stroke-width='2'/%3E%3Ccircle cx='32' cy='30' r='8' fill='none' stroke='%2334d399' stroke-width='1.5' opacity='0.6'/%3E%3Ccircle cx='32' cy='30' r='3' fill='%2334d399'/%3E%3Ctext x='32' y='56' text-anchor='middle' font-family='serif' font-weight='bold' font-size='12' fill='%2334d399'%3ESS%3C/text%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -38,7 +58,7 @@ body::before {
   z-index: 9999;
 }
 
-/* NAV */
+/* ═══ NAV ═══ */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 1.25rem 3rem;
@@ -64,7 +84,86 @@ nav {
 }
 .nav-cta:hover { opacity: 0.85; }
 
-/* HERO */
+/* ═══ MOBILE NAV ═══ */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 110;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.nav-hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 10, 0.97);
+  backdrop-filter: blur(20px);
+  z-index: 99;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.mobile-nav-overlay.active {
+  display: flex;
+}
+
+.mobile-nav-overlay a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  transition: color 0.2s;
+  letter-spacing: -0.01em;
+}
+
+.mobile-nav-overlay a:hover {
+  color: var(--sage-bright);
+}
+
+.mobile-nav-overlay .mobile-cta {
+  margin-top: 2rem;
+  background: var(--sage-bright);
+  color: var(--bg-void);
+  padding: 0.9rem 2.5rem;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+/* ═══ HERO ═══ */
 .hero {
   min-height: 100vh;
   display: flex; align-items: center;
@@ -205,7 +304,7 @@ nav {
 .gps-ring:nth-child(3) { animation-delay: 2s; }
 @keyframes expand { 0% { transform: scale(0.3); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
 
-/* SECTIONS */
+/* ═══ SECTIONS ═══ */
 section { padding: 6rem 3rem; }
 .section-inner { max-width: 1200px; margin: 0 auto; }
 .section-label {
@@ -221,7 +320,7 @@ section { padding: 6rem 3rem; }
 .section-title em { font-style: italic; color: var(--sage-bright); }
 .section-body { font-size: 1.1rem; line-height: 1.75; color: var(--text-secondary); max-width: 680px; }
 
-/* NARRATIVE */
+/* ═══ NARRATIVE ═══ */
 .narrative { background: var(--bg-primary); }
 .narrative-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .narrative-quote {
@@ -233,7 +332,7 @@ section { padding: 6rem 3rem; }
 .narrative-text { font-size: 1rem; line-height: 1.8; color: var(--text-secondary); }
 .narrative-text + .narrative-text { margin-top: 1rem; }
 
-/* FEATURES */
+/* ═══ FEATURES ═══ */
 .features-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
   margin-top: 3.5rem;
@@ -257,7 +356,7 @@ section { padding: 6rem 3rem; }
 .feature-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
 .feature-desc { font-size: 0.9rem; line-height: 1.65; color: var(--text-secondary); }
 
-/* CAPABILITIES */
+/* ═══ CAPABILITIES ═══ */
 .capabilities { background: var(--bg-primary); }
 .cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem; }
 .cap-tile {
@@ -271,9 +370,7 @@ section { padding: 6rem 3rem; }
 .cap-desc { font-size: 0.82rem; line-height: 1.55; color: var(--text-secondary); }
 
 /* GPS rings in tile */
-.gps-tile-ring {
-  width: 50px; height: 50px; position: relative;
-}
+.gps-tile-ring { width: 50px; height: 50px; position: relative; }
 .gps-tile-ring::before, .gps-tile-ring::after {
   content: ''; position: absolute; border-radius: 50%;
   border: 1.5px solid var(--sage-bright);
@@ -335,7 +432,7 @@ section { padding: 6rem 3rem; }
   background: var(--sage-dark); border: 2px solid var(--bg-card);
   display: flex; align-items: center; justify-content: center;
   font-size: 0.75rem; font-weight: 700; color: var(--sage-bright);
-  margin-left: -8px; first-child { margin-left: 0; }
+  margin-left: -8px;
 }
 .avatar:first-child { margin-left: 0; }
 .avatar-score {
@@ -343,7 +440,7 @@ section { padding: 6rem 3rem; }
   margin-left: 12px; margin-top: auto;
 }
 
-/* VOICES */
+/* ═══ VOICES ═══ */
 .voice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
 .voice-card {
   background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
@@ -376,7 +473,7 @@ section { padding: 6rem 3rem; }
 .voice-wave-bar:nth-child(6) { height: 8px; animation-delay: 0.5s; }
 @keyframes voiceWave { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.4); } }
 
-/* WATCH SECTION */
+/* ═══ WATCH ═══ */
 .watch-section {
   background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(139,92,246,0.06) 0%, transparent 70%);
   text-align: center;
@@ -418,12 +515,10 @@ section { padding: 6rem 3rem; }
 }
 @keyframes micPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
 
-/* FOUNDER */
+/* ═══ FOUNDER ═══ */
 .founder-section { background: var(--bg-primary); }
 .founder-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
-.founder-stats {
-  display: flex; gap: 3rem; margin: 2rem 0;
-}
+.founder-stats { display: flex; gap: 3rem; margin: 2rem 0; }
 .founder-stat-num {
   font-family: 'Playfair Display', serif;
   font-size: 2.5rem; font-weight: 900; color: var(--sage-bright); line-height: 1;
@@ -446,16 +541,14 @@ section { padding: 6rem 3rem; }
 .code-val { color: var(--sage-bright); }
 .code-str { color: #fca5a5; }
 
-/* WAITLIST */
+/* ═══ WAITLIST ═══ */
 .waitlist-section {
   text-align: center;
   background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(52,211,153,0.06) 0%, transparent 70%);
 }
 .waitlist-section .section-title { margin-bottom: 0.75rem; }
 .waitlist-section .section-body { margin: 0 auto 2.5rem; max-width: 500px; }
-.email-form {
-  display: flex; gap: 0.75rem; max-width: 440px; margin: 0 auto;
-}
+.email-form { display: flex; gap: 0.75rem; max-width: 440px; margin: 0 auto; }
 .email-input {
   flex: 1; background: var(--bg-card);
   border: 1px solid rgba(255,255,255,0.1);
@@ -474,7 +567,7 @@ section { padding: 6rem 3rem; }
 .email-submit:hover { background: var(--sage-glow); }
 .cta-note { font-size: 0.82rem; color: var(--text-muted); margin-top: 1rem; }
 
-/* FOOTER */
+/* ═══ FOOTER ═══ */
 footer {
   border-top: 1px solid rgba(255,255,255,0.06);
   padding: 2rem 3rem;
@@ -493,17 +586,18 @@ footer {
 .footer-links a:hover { color: var(--text-primary); }
 .footer-copy { font-size: 0.82rem; color: var(--text-muted); }
 
-/* ANIMATIONS */
+/* ═══ ANIMATIONS ═══ */
 .animate-on-scroll {
   opacity: 0; transform: translateY(40px);
   transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
-/* RESPONSIVE */
+/* ═══ RESPONSIVE ═══ */
 @media (max-width: 960px) {
   nav { padding: 1rem 1.5rem; }
   .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
   section { padding: 5rem 1.5rem; }
   .hero { padding: 7rem 1.5rem 4rem; }
   .hero-content { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
@@ -539,7 +633,21 @@ footer {
     <li><a href="#story">Our Story</a></li>
     <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav-overlay" id="mobileNav">
+  <a href="#features" class="mobile-nav-link">Features</a>
+  <a href="#capabilities" class="mobile-nav-link">Capabilities</a>
+  <a href="#vision" class="mobile-nav-link">Vision</a>
+  <a href="#story" class="mobile-nav-link">Our Story</a>
+  <a href="#waitlist" class="mobile-nav-link mobile-cta">Join Waitlist</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -668,7 +776,6 @@ footer {
     <div class="section-label">Under the Hood</div>
     <div class="section-title">Built for <em>every</em> round.</div>
     <div class="cap-grid animate-on-scroll">
-      <!-- GPS -->
       <div class="cap-tile">
         <div class="cap-animation">
           <div class="gps-tile-ring"><div class="gps-dot"></div></div>
@@ -676,7 +783,6 @@ footer {
         <div class="cap-title">Live GPS Positioning</div>
         <p class="cap-desc">Precise yardages to front, center, and back — updated in real time as you walk the course.</p>
       </div>
-      <!-- Voice -->
       <div class="cap-tile">
         <div class="cap-animation">
           <div class="audio-bars">
@@ -690,7 +796,6 @@ footer {
         <div class="cap-title">Natural Voice Interaction</div>
         <p class="cap-desc">Ask your caddie out loud. Get a spoken answer. No typing, no squinting at your phone mid-round.</p>
       </div>
-      <!-- Scorecard -->
       <div class="cap-tile">
         <div class="cap-animation" style="align-items:flex-start;width:100%;">
           <div class="scorecard-mini">
@@ -709,7 +814,6 @@ footer {
         <div class="cap-title">Full Digital Scorecard</div>
         <p class="cap-desc">Track every stroke, with handicap calculations and net scoring built in for the whole group.</p>
       </div>
-      <!-- Practice -->
       <div class="cap-tile">
         <div class="cap-animation" style="align-items:flex-start;width:100%;">
           <div class="progress-bars">
@@ -730,7 +834,6 @@ footer {
         <div class="cap-title">Data-Driven Practice</div>
         <p class="cap-desc">Your round data surfaces exactly where strokes are being lost — and builds a practice plan to fix it.</p>
       </div>
-      <!-- Strategy -->
       <div class="cap-tile">
         <div class="cap-animation">
           <div class="node-network">
@@ -747,7 +850,6 @@ footer {
         <div class="cap-title">Hole-by-Hole Strategy</div>
         <p class="cap-desc">Course-specific game plans based on your tendencies, hazard placement, and current scoring position.</p>
       </div>
-      <!-- Multiplayer -->
       <div class="cap-tile">
         <div class="cap-animation">
           <div class="multi-avatars">
@@ -778,12 +880,8 @@ footer {
         <div class="voice-style">The Veteran</div>
         <p class="voice-quote">"Take the 7-iron, aim at the left bunker edge, and trust your swing. You've hit this shot a hundred times."</p>
         <div class="voice-wave">
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div><div class="voice-wave-bar"></div><div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div><div class="voice-wave-bar"></div><div class="voice-wave-bar"></div>
         </div>
       </div>
       <div class="voice-card">
@@ -792,12 +890,8 @@ footer {
         <div class="voice-style">The Strategist</div>
         <p class="voice-quote">"Wind's into you at 12 mph — that's a full club. I'd play the 6-iron and keep it below the hole."</p>
         <div class="voice-wave">
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div><div class="voice-wave-bar"></div><div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div><div class="voice-wave-bar"></div><div class="voice-wave-bar"></div>
         </div>
       </div>
       <div class="voice-card">
@@ -806,12 +900,8 @@ footer {
         <div class="voice-style">The Motivator</div>
         <p class="voice-quote">"Right, birdie chance here — let's not overthink it. Smooth swing, trust the line. You've got this."</p>
         <div class="voice-wave">
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
-          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div><div class="voice-wave-bar"></div><div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div><div class="voice-wave-bar"></div><div class="voice-wave-bar"></div>
         </div>
       </div>
     </div>
@@ -905,6 +995,7 @@ footer {
 </footer>
 
 <script>
+// Scroll animations
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -912,11 +1003,38 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
 document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
     const target = document.querySelector(a.getAttribute('href'));
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Mobile nav
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('active');
+  mobileNav.classList.toggle('active');
+  document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+});
+
+// Close mobile nav when a link is tapped
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    hamburger.classList.remove('active');
+    mobileNav.classList.remove('active');
+    document.body.style.overflow = '';
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
   });
 });
 </script>
