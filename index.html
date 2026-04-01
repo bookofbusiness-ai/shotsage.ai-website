@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShotSage — Every Shot Deserves Sage Advice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sage-deep: #1a2e1a;
+  --sage-dark: #2d4a2d;
+  --sage-mid: #4a7a4a;
+  --sage-light: #6db56d;
+  --sage-bright: #34d399;
+  --sage-glow: #4ade80;
+  --bg-void: #0a0f0a;
+  --bg-primary: #0d120d;
+  --bg-card: #131a13;
+  --bg-elevated: #1a221a;
+  --text-primary: #e8f0e8;
+  --text-secondary: #8fa88f;
+  --text-muted: #5a725a;
+  --gold-accent: #c9a84c;
+  --purple-accent: #8b5cf6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--sage-dark) var(--bg-void); }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg-void); color: var(--text-primary); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.25rem 3rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(to bottom, rgba(10,15,10,0.95), rgba(10,15,10,0));
+  backdrop-filter: blur(12px);
+}
+.nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+.nav-logo-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--sage-mid), var(--sage-bright));
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.nav-logo-text { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
+.nav-logo-text span { color: var(--sage-bright); }
+.nav-links { display: flex; gap: 2.5rem; align-items: center; list-style: none; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text-primary); }
+.nav-cta {
+  background: var(--sage-bright) !important; color: var(--bg-void) !important;
+  padding: 0.5rem 1.25rem; border-radius: 6px; font-weight: 600 !important;
+  transition: opacity 0.2s !important;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 7rem 3rem 5rem;
+  position: relative;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(52,211,153,0.08) 0%, transparent 70%);
+}
+.hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.hero-grid-line {
+  position: absolute; background: rgba(74,122,74,0.12);
+}
+.hero-grid-line.h { left: 0; right: 0; height: 1px; }
+.hero-grid-line.v { top: 0; bottom: 0; width: 1px; }
+
+.hero-content {
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25);
+  color: var(--sage-bright); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+}
+.hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 900; line-height: 1.1; letter-spacing: -0.03em;
+  margin-bottom: 1.5rem; color: var(--text-primary);
+}
+.hero-title em { font-style: italic; color: var(--sage-bright); }
+
+.hero-subtitle {
+  font-size: 1.15rem; line-height: 1.7; color: var(--text-secondary);
+  margin-bottom: 2.5rem; max-width: 480px;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn-primary {
+  background: var(--sage-bright); color: var(--bg-void);
+  padding: 0.9rem 2rem; border-radius: 8px; font-weight: 700;
+  font-size: 0.95rem; text-decoration: none; border: none; cursor: pointer;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-primary:hover { background: var(--sage-glow); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: transparent; color: var(--text-primary);
+  padding: 0.9rem 2rem; border-radius: 8px; font-weight: 600;
+  font-size: 0.95rem; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-secondary:hover { border-color: var(--sage-bright); color: var(--sage-bright); }
+
+/* Abstract phone mockup */
+.hero-visual { display: flex; justify-content: center; align-items: center; }
+.abstract-phone {
+  width: 280px; height: 560px;
+  background: var(--bg-card);
+  border-radius: 40px;
+  border: 2px solid rgba(52,211,153,0.2);
+  box-shadow: 0 0 60px rgba(52,211,153,0.08), 0 40px 80px rgba(0,0,0,0.5);
+  position: relative; overflow: hidden;
+  transform: perspective(1000px) rotateY(-8deg) rotateX(3deg);
+  transition: transform 0.4s ease;
+}
+.abstract-phone:hover { transform: perspective(1000px) rotateY(-4deg) rotateX(1deg); }
+.phone-notch {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 100px; height: 28px; background: #0a0f0a;
+  border-radius: 14px; z-index: 10;
+}
+.phone-screen {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #0d1f0d 0%, #0a0f0a 100%);
+  padding: 60px 20px 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.phone-greeting {
+  font-size: 0.7rem; color: var(--text-muted); font-family: 'DM Sans', sans-serif;
+  padding-top: 8px;
+}
+.phone-greeting strong { display: block; font-size: 1rem; color: var(--text-primary); font-weight: 700; margin-top: 2px; }
+.phone-stat-row { display: flex; gap: 8px; }
+.phone-stat {
+  flex: 1; background: rgba(52,211,153,0.06);
+  border: 1px solid rgba(52,211,153,0.15);
+  border-radius: 12px; padding: 10px;
+}
+.phone-stat-label { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.phone-stat-val { font-size: 1.1rem; font-weight: 700; color: var(--sage-bright); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+.phone-card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 12px;
+}
+.phone-card-label { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.phone-waveform { display: flex; align-items: center; gap: 3px; height: 24px; }
+.waveform-bar {
+  flex: 1; background: var(--sage-bright); border-radius: 2px;
+  animation: wave 1.2s ease-in-out infinite;
+}
+.waveform-bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+.waveform-bar:nth-child(2) { height: 80%; animation-delay: 0.1s; }
+.waveform-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+.waveform-bar:nth-child(4) { height: 100%; animation-delay: 0.3s; }
+.waveform-bar:nth-child(5) { height: 50%; animation-delay: 0.4s; }
+.waveform-bar:nth-child(6) { height: 70%; animation-delay: 0.5s; }
+.waveform-bar:nth-child(7) { height: 30%; animation-delay: 0.6s; }
+.waveform-bar:nth-child(8) { height: 90%; animation-delay: 0.7s; }
+@keyframes wave { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.4); } }
+
+.phone-cta-btn {
+  margin-top: auto;
+  background: var(--sage-bright); color: var(--bg-void);
+  border-radius: 10px; padding: 12px;
+  font-size: 0.7rem; font-weight: 700; text-align: center;
+}
+
+/* GPS ring decoration */
+.gps-rings {
+  position: absolute; right: -40px; top: 50%;
+  transform: translateY(-50%);
+  width: 200px; height: 200px;
+  pointer-events: none;
+}
+.gps-ring {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(52,211,153,0.15);
+  border-radius: 50%;
+  animation: expand 3s ease-out infinite;
+}
+.gps-ring:nth-child(2) { animation-delay: 1s; }
+.gps-ring:nth-child(3) { animation-delay: 2s; }
+@keyframes expand { 0% { transform: scale(0.3); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+
+/* SECTIONS */
+section { padding: 6rem 3rem; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--sage-bright); margin-bottom: 1rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+  margin-bottom: 1.25rem;
+}
+.section-title em { font-style: italic; color: var(--sage-bright); }
+.section-body { font-size: 1.1rem; line-height: 1.75; color: var(--text-secondary); max-width: 680px; }
+
+/* NARRATIVE */
+.narrative { background: var(--bg-primary); }
+.narrative-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.narrative-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-style: italic; line-height: 1.5;
+  color: var(--text-primary); margin-bottom: 1.5rem;
+  border-left: 3px solid var(--sage-bright); padding-left: 1.5rem;
+}
+.narrative-text { font-size: 1rem; line-height: 1.8; color: var(--text-secondary); }
+.narrative-text + .narrative-text { margin-top: 1rem; }
+
+/* FEATURES */
+.features-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+.feature-card {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 2rem;
+  transition: all 0.3s ease; position: relative; overflow: hidden;
+}
+.feature-card:hover { border-color: rgba(52,211,153,0.2); transform: translateY(-3px); }
+.feature-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at top left, rgba(52,211,153,0.04), transparent 60%);
+}
+.feature-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 1.25rem;
+}
+.feature-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem; }
+.feature-desc { font-size: 0.9rem; line-height: 1.65; color: var(--text-secondary); }
+
+/* CAPABILITIES */
+.capabilities { background: var(--bg-primary); }
+.cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem; }
+.cap-tile {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 1.75rem;
+  transition: all 0.3s; overflow: hidden; position: relative;
+}
+.cap-tile:hover { border-color: rgba(52,211,153,0.25); }
+.cap-animation { height: 60px; margin-bottom: 1.25rem; display: flex; align-items: center; }
+.cap-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+.cap-desc { font-size: 0.82rem; line-height: 1.55; color: var(--text-secondary); }
+
+/* GPS rings in tile */
+.gps-tile-ring {
+  width: 50px; height: 50px; position: relative;
+}
+.gps-tile-ring::before, .gps-tile-ring::after {
+  content: ''; position: absolute; border-radius: 50%;
+  border: 1.5px solid var(--sage-bright);
+}
+.gps-tile-ring::before { inset: 0; animation: gpsRing 2s ease-out infinite; }
+.gps-tile-ring::after { inset: 8px; animation: gpsRing 2s ease-out infinite 0.7s; }
+@keyframes gpsRing { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.4); opacity: 0; } }
+.gps-dot {
+  position: absolute; width: 8px; height: 8px;
+  background: var(--sage-bright); border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+
+/* Audio bars */
+.audio-bars { display: flex; align-items: flex-end; gap: 4px; height: 50px; }
+.audio-bar {
+  width: 8px; background: var(--sage-bright); border-radius: 3px;
+  animation: audioBar 1s ease-in-out infinite alternate;
+}
+.audio-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+.audio-bar:nth-child(2) { height: 70%; animation-delay: 0.1s; }
+.audio-bar:nth-child(3) { height: 100%; animation-delay: 0.2s; }
+.audio-bar:nth-child(4) { height: 50%; animation-delay: 0.3s; }
+.audio-bar:nth-child(5) { height: 80%; animation-delay: 0.4s; }
+@keyframes audioBar { to { height: 20%; } }
+
+/* Scorecard mini */
+.scorecard-mini { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; width: 100%; }
+.sc-cell {
+  background: rgba(52,211,153,0.08); border-radius: 4px;
+  padding: 4px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--sage-bright);
+}
+.sc-cell.header { color: var(--text-muted); background: rgba(255,255,255,0.04); }
+
+/* Progress bars */
+.progress-bars { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.progress-row { display: flex; align-items: center; gap: 8px; }
+.progress-label { font-size: 0.6rem; color: var(--text-muted); width: 40px; flex-shrink: 0; }
+.progress-track { flex: 1; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; }
+.progress-fill { height: 100%; background: var(--sage-bright); border-radius: 2px; }
+
+/* Node network */
+.node-network { position: relative; width: 100%; height: 50px; }
+.node { position: absolute; width: 8px; height: 8px; background: var(--sage-bright); border-radius: 50%; }
+.node::after {
+  content: ''; position: absolute; inset: -4px;
+  border: 1px solid rgba(52,211,153,0.3); border-radius: 50%;
+}
+.node-line {
+  position: absolute; height: 1px; background: rgba(52,211,153,0.2);
+  transform-origin: left center;
+}
+
+/* Multiplayer avatars */
+.multi-avatars { display: flex; gap: -8px; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--sage-dark); border: 2px solid var(--bg-card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; color: var(--sage-bright);
+  margin-left: -8px; first-child { margin-left: 0; }
+}
+.avatar:first-child { margin-left: 0; }
+.avatar-score {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-secondary);
+  margin-left: 12px; margin-top: auto;
+}
+
+/* VOICES */
+.voice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+.voice-card {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px; padding: 2rem; text-align: center;
+  transition: all 0.3s;
+}
+.voice-card:hover { border-color: rgba(52,211,153,0.2); }
+.voice-avatar {
+  width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 1rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; background: var(--bg-elevated);
+  border: 2px solid rgba(52,211,153,0.2);
+}
+.voice-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+.voice-style { font-size: 0.8rem; color: var(--sage-bright); font-weight: 600; margin-bottom: 0.75rem; }
+.voice-quote {
+  font-size: 0.88rem; line-height: 1.6; color: var(--text-secondary);
+  font-style: italic;
+}
+.voice-wave { display: flex; align-items: center; justify-content: center; gap: 3px; height: 24px; margin-top: 1.25rem; }
+.voice-wave-bar {
+  width: 3px; background: rgba(52,211,153,0.4); border-radius: 2px;
+  animation: voiceWave 1.4s ease-in-out infinite;
+}
+.voice-wave-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+.voice-wave-bar:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+.voice-wave-bar:nth-child(3) { height: 20px; animation-delay: 0.2s; }
+.voice-wave-bar:nth-child(4) { height: 12px; animation-delay: 0.3s; }
+.voice-wave-bar:nth-child(5) { height: 18px; animation-delay: 0.4s; }
+.voice-wave-bar:nth-child(6) { height: 8px; animation-delay: 0.5s; }
+@keyframes voiceWave { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.4); } }
+
+/* WATCH SECTION */
+.watch-section {
+  background: radial-gradient(ellipse 100% 80% at 50% 50%, rgba(139,92,246,0.06) 0%, transparent 70%);
+  text-align: center;
+}
+.watch-section .section-inner { max-width: 800px; }
+.watch-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25);
+  color: var(--purple-accent); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+}
+.watch-section .section-title { text-align: center; }
+.watch-section .section-body { max-width: 580px; margin: 0 auto 2rem; }
+
+.watch-mockup {
+  width: 100px; height: 115px; margin: 2.5rem auto 1rem;
+  background: var(--bg-card); border-radius: 28px;
+  border: 2px solid rgba(139,92,246,0.3);
+  box-shadow: 0 0 40px rgba(139,92,246,0.1);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.watch-screen {
+  width: 76px; height: 88px; background: #0d0a1a;
+  border-radius: 20px; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px; padding: 8px;
+}
+.watch-yardage {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.6rem; font-weight: 700; color: #a78bfa;
+  line-height: 1;
+}
+.watch-label { font-size: 0.45rem; color: rgba(167,139,250,0.6); text-transform: uppercase; letter-spacing: 0.08em; }
+.watch-mic {
+  font-size: 0.9rem; margin-top: 4px;
+  animation: micPulse 2s ease-in-out infinite;
+}
+@keyframes micPulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
+
+/* FOUNDER */
+.founder-section { background: var(--bg-primary); }
+.founder-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+.founder-stats {
+  display: flex; gap: 3rem; margin: 2rem 0;
+}
+.founder-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem; font-weight: 900; color: var(--sage-bright); line-height: 1;
+}
+.founder-stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+.founder-code {
+  background: var(--bg-card); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 1.5rem;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  line-height: 1.7; color: var(--text-secondary);
+  position: relative; overflow: hidden;
+}
+.founder-code::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sage-bright), var(--purple-accent));
+}
+.code-comment { color: var(--text-muted); }
+.code-key { color: #7dd3fc; }
+.code-val { color: var(--sage-bright); }
+.code-str { color: #fca5a5; }
+
+/* WAITLIST */
+.waitlist-section {
+  text-align: center;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(52,211,153,0.06) 0%, transparent 70%);
+}
+.waitlist-section .section-title { margin-bottom: 0.75rem; }
+.waitlist-section .section-body { margin: 0 auto 2.5rem; max-width: 500px; }
+.email-form {
+  display: flex; gap: 0.75rem; max-width: 440px; margin: 0 auto;
+}
+.email-input {
+  flex: 1; background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 0.9rem 1.25rem;
+  color: var(--text-primary); font-size: 0.95rem; font-family: inherit;
+  outline: none; transition: border-color 0.2s;
+}
+.email-input:focus { border-color: var(--sage-bright); }
+.email-input::placeholder { color: var(--text-muted); }
+.email-submit {
+  background: var(--sage-bright); color: var(--bg-void);
+  padding: 0.9rem 1.75rem; border-radius: 8px;
+  font-weight: 700; font-size: 0.95rem; border: none; cursor: pointer;
+  font-family: inherit; transition: all 0.2s; white-space: nowrap;
+}
+.email-submit:hover { background: var(--sage-glow); }
+.cta-note { font-size: 0.82rem; color: var(--text-muted); margin-top: 1rem; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem 3rem;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 700;
+}
+.footer-logo span { color: var(--sage-bright); }
+.footer-links { display: flex; gap: 1.75rem; }
+.footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.footer-links a:hover { color: var(--text-primary); }
+.footer-copy { font-size: 0.82rem; color: var(--text-muted); }
+
+/* ANIMATIONS */
+.animate-on-scroll {
+  opacity: 0; transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 960px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 5rem 1.5rem; }
+  .hero { padding: 7rem 1.5rem 4rem; }
+  .hero-content { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
+  .hero-subtitle { margin: 0 auto 2.5rem; }
+  .hero-actions { justify-content: center; }
+  .abstract-phone { transform: none; }
+  .narrative-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .cap-grid { grid-template-columns: 1fr 1fr; }
+  .voice-grid { grid-template-columns: 1fr; }
+  .founder-grid { grid-template-columns: 1fr; }
+  .email-form { flex-direction: column; }
+  .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+}
+@media (max-width: 600px) {
+  .cap-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🦉</div>
+    <div class="nav-logo-text">Shot<span>Sage</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#capabilities">Capabilities</a></li>
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid-line h" style="top:25%"></div>
+    <div class="hero-grid-line h" style="top:50%"></div>
+    <div class="hero-grid-line h" style="top:75%"></div>
+    <div class="hero-grid-line v" style="left:25%"></div>
+    <div class="hero-grid-line v" style="left:50%"></div>
+    <div class="hero-grid-line v" style="left:75%"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge">AI-Powered Golf Intelligence</div>
+      <h1 class="hero-title">Every shot deserves<br><em>sage advice.</em></h1>
+      <p class="hero-subtitle">
+        ShotSage is the AI caddie that knows the course, reads the conditions, and delivers tour-level strategy — right in your pocket. And soon, on your wrist.
+      </p>
+      <div class="hero-actions">
+        <a href="#waitlist" class="btn-primary">Join the Waitlist →</a>
+        <a href="#features" class="btn-secondary">See How It Works</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div style="position:relative;">
+        <div class="abstract-phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-greeting">Good morning<strong>Hole 7 · Par 4</strong></div>
+            <div class="phone-stat-row">
+              <div class="phone-stat">
+                <div class="phone-stat-label">To Pin</div>
+                <div class="phone-stat-val">178</div>
+              </div>
+              <div class="phone-stat">
+                <div class="phone-stat-label">Wind</div>
+                <div class="phone-stat-val">8 SW</div>
+              </div>
+            </div>
+            <div class="phone-card">
+              <div class="phone-card-label">Charlie · AI Caddie</div>
+              <div class="phone-waveform">
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+              </div>
+            </div>
+            <div class="phone-stat-row">
+              <div class="phone-stat">
+                <div class="phone-stat-label">Score</div>
+                <div class="phone-stat-val">-2</div>
+              </div>
+              <div class="phone-stat">
+                <div class="phone-stat-label">Putts</div>
+                <div class="phone-stat-val">12</div>
+              </div>
+            </div>
+            <div class="phone-cta-btn">🎙 Ask Your Caddie</div>
+          </div>
+        </div>
+        <div class="gps-rings" style="position:absolute;right:-50px;top:40%;transform:translateY(-50%);">
+          <div class="gps-ring"></div>
+          <div class="gps-ring"></div>
+          <div class="gps-ring"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NARRATIVE -->
+<section class="narrative" id="features">
+  <div class="section-inner narrative-grid">
+    <div>
+      <div class="section-label">The Problem</div>
+      <blockquote class="narrative-quote">"Tour pros have caddies. The rest of us have guesswork."</blockquote>
+      <p class="narrative-text">A PGA Tour caddie reads the wind, knows the course architecture, tracks your tendencies, and talks you through pressure moments. That expertise has always been reserved for professionals.</p>
+      <p class="narrative-text" style="margin-top:1rem;">Until now.</p>
+    </div>
+    <div>
+      <div class="section-label">The Solution</div>
+      <div class="section-title" style="font-size:1.8rem;">ShotSage puts a world-class <em>AI caddie</em> in every golfer's pocket.</div>
+      <p class="narrative-text" style="margin-top:1rem;">Real-time yardages, personalized club recommendations, wind adjustments, and a conversational caddie that actually listens — for players of every level, on every course.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Features</div>
+    <div class="section-title">Everything you need.<br><em>Nothing you don't.</em></div>
+    <div class="features-grid animate-on-scroll">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">AI Caddie Advice</div>
+        <p class="feature-desc">Voice-powered conversations with your caddie. Ask anything — club selection, course strategy, layup vs. go for it. Claude AI powers every response.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <div class="feature-title">GPS Flyover Views</div>
+        <p class="feature-desc">Cinematic 3D course flyovers before every shot. See the hazards, the landing zones, and the optimal line — exactly like the pros see it on TV.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Smart Practice Plans</div>
+        <p class="feature-desc">Your stats feed a personalized practice routine. Work on what actually costs you strokes — not what you think does.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <div class="feature-title">Multiplayer Side Games</div>
+        <p class="feature-desc">Built-in Nassau, Skins, Wolf, and more. Real-time scoring keeps every player in the action from the first tee to the final putt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="capabilities" id="capabilities">
+  <div class="section-inner">
+    <div class="section-label">Under the Hood</div>
+    <div class="section-title">Built for <em>every</em> round.</div>
+    <div class="cap-grid animate-on-scroll">
+      <!-- GPS -->
+      <div class="cap-tile">
+        <div class="cap-animation">
+          <div class="gps-tile-ring"><div class="gps-dot"></div></div>
+        </div>
+        <div class="cap-title">Live GPS Positioning</div>
+        <p class="cap-desc">Precise yardages to front, center, and back — updated in real time as you walk the course.</p>
+      </div>
+      <!-- Voice -->
+      <div class="cap-tile">
+        <div class="cap-animation">
+          <div class="audio-bars">
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+          </div>
+        </div>
+        <div class="cap-title">Natural Voice Interaction</div>
+        <p class="cap-desc">Ask your caddie out loud. Get a spoken answer. No typing, no squinting at your phone mid-round.</p>
+      </div>
+      <!-- Scorecard -->
+      <div class="cap-tile">
+        <div class="cap-animation" style="align-items:flex-start;width:100%;">
+          <div class="scorecard-mini">
+            <div class="sc-cell header">H</div>
+            <div class="sc-cell header">Par</div>
+            <div class="sc-cell header">Hcp</div>
+            <div class="sc-cell header">You</div>
+            <div class="sc-cell header">Net</div>
+            <div class="sc-cell">7</div>
+            <div class="sc-cell">4</div>
+            <div class="sc-cell">8</div>
+            <div class="sc-cell">3</div>
+            <div class="sc-cell" style="color:var(--sage-bright);">-1</div>
+          </div>
+        </div>
+        <div class="cap-title">Full Digital Scorecard</div>
+        <p class="cap-desc">Track every stroke, with handicap calculations and net scoring built in for the whole group.</p>
+      </div>
+      <!-- Practice -->
+      <div class="cap-tile">
+        <div class="cap-animation" style="align-items:flex-start;width:100%;">
+          <div class="progress-bars">
+            <div class="progress-row">
+              <span class="progress-label">Driving</span>
+              <div class="progress-track"><div class="progress-fill" style="width:80%"></div></div>
+            </div>
+            <div class="progress-row">
+              <span class="progress-label">Wedges</span>
+              <div class="progress-track"><div class="progress-fill" style="width:55%"></div></div>
+            </div>
+            <div class="progress-row">
+              <span class="progress-label">Putting</span>
+              <div class="progress-track"><div class="progress-fill" style="width:65%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap-title">Data-Driven Practice</div>
+        <p class="cap-desc">Your round data surfaces exactly where strokes are being lost — and builds a practice plan to fix it.</p>
+      </div>
+      <!-- Strategy -->
+      <div class="cap-tile">
+        <div class="cap-animation">
+          <div class="node-network">
+            <div class="node" style="left:8px;top:50%;transform:translateY(-50%)"></div>
+            <div class="node" style="left:45%;top:10px"></div>
+            <div class="node" style="left:45%;top:calc(100% - 18px)"></div>
+            <div class="node" style="right:8px;top:50%;transform:translateY(-50%)"></div>
+            <div class="node-line" style="left:16px;top:50%;width:calc(45% - 16px);transform:rotate(-20deg);transform-origin:left;"></div>
+            <div class="node-line" style="left:16px;top:50%;width:calc(45% - 16px);transform:rotate(20deg);transform-origin:left;"></div>
+            <div class="node-line" style="left:calc(45% + 8px);top:18px;width:calc(55% - 24px);transform:rotate(-20deg);transform-origin:left;"></div>
+            <div class="node-line" style="left:calc(45% + 8px);top:calc(100% - 18px);width:calc(55% - 24px);transform:rotate(20deg);transform-origin:left;"></div>
+          </div>
+        </div>
+        <div class="cap-title">Hole-by-Hole Strategy</div>
+        <p class="cap-desc">Course-specific game plans based on your tendencies, hazard placement, and current scoring position.</p>
+      </div>
+      <!-- Multiplayer -->
+      <div class="cap-tile">
+        <div class="cap-animation">
+          <div class="multi-avatars">
+            <div class="avatar">JD</div>
+            <div class="avatar">MK</div>
+            <div class="avatar">RS</div>
+            <div class="avatar">TW</div>
+          </div>
+          <span class="avatar-score">Nassau · $5</span>
+        </div>
+        <div class="cap-title">Live Side Games</div>
+        <p class="cap-desc">Automatic payout tracking, press options, and live leaderboards for your whole group, no pencil math needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CADDIE VOICES -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Your Caddie, Your Style</div>
+    <div class="section-title">Three voices. <em>One mission.</em></div>
+    <p class="section-body">Choose the caddie personality that fits your game — and your vibe on the course.</p>
+    <div class="voice-grid animate-on-scroll">
+      <div class="voice-card">
+        <div class="voice-avatar">🏌️</div>
+        <div class="voice-name">Charlie</div>
+        <div class="voice-style">The Veteran</div>
+        <p class="voice-quote">"Take the 7-iron, aim at the left bunker edge, and trust your swing. You've hit this shot a hundred times."</p>
+        <div class="voice-wave">
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+        </div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-avatar">🌟</div>
+        <div class="voice-name">Rachel</div>
+        <div class="voice-style">The Strategist</div>
+        <p class="voice-quote">"Wind's into you at 12 mph — that's a full club. I'd play the 6-iron and keep it below the hole."</p>
+        <div class="voice-wave">
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+        </div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-avatar">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+        <div class="voice-name">Callum</div>
+        <div class="voice-style">The Motivator</div>
+        <p class="voice-quote">"Right, birdie chance here — let's not overthink it. Smooth swing, trust the line. You've got this."</p>
+        <div class="voice-wave">
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+          <div class="voice-wave-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WATCH VISION -->
+<section class="watch-section" id="vision">
+  <div class="section-inner">
+    <div class="watch-badge">⌚ Coming Soon</div>
+    <div class="section-title" style="text-align:center;">ShotSage<br><em>on your wrist.</em></div>
+    <p class="section-body">Imagine raising your wrist on the tee box and hearing your caddie tell you the yardage and club selection — before you've even reached for your phone. Apple Watch integration is next.</p>
+    <div class="watch-mockup">
+      <div class="watch-screen">
+        <div class="watch-label">To Pin</div>
+        <div class="watch-yardage">178</div>
+        <div class="watch-label">6-iron</div>
+        <div class="watch-mic">🎙</div>
+      </div>
+    </div>
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.75rem;">Raise to speak. Caddie answers. No hands needed.</p>
+  </div>
+</section>
+
+<!-- FOUNDER STORY -->
+<section class="founder-section" id="story">
+  <div class="section-inner founder-grid">
+    <div>
+      <div class="section-label">The Story</div>
+      <div class="section-title">Built by a <em>golfer</em>, for golfers.</div>
+      <p class="section-body" style="margin-top:1rem;">ShotSage started with a simple question: why do we all just guess out there? GPS watches tell you the distance. But they don't tell you what to do with it.</p>
+      <p class="section-body" style="margin-top:1rem;">The app is bootstrapped, solo-built, and obsessively focused on one thing: making every golfer feel like they have a real caddie in their corner.</p>
+      <div class="founder-stats">
+        <div>
+          <div class="founder-stat-num">11K+</div>
+          <div class="founder-stat-label">Lines of Swift</div>
+        </div>
+        <div>
+          <div class="founder-stat-num">0</div>
+          <div class="founder-stat-label">External dependencies</div>
+        </div>
+        <div>
+          <div class="founder-stat-num">100%</div>
+          <div class="founder-stat-label">Bootstrapped</div>
+        </div>
+      </div>
+    </div>
+    <div class="founder-code">
+      <div class="code-comment">// ShotSage architecture</div>
+      <br>
+      <div><span class="code-key">framework:</span> <span class="code-str">"SwiftUI + SwiftData"</span></div>
+      <div><span class="code-key">ai:</span> <span class="code-str">"Claude API"</span></div>
+      <div><span class="code-key">voice_in:</span> <span class="code-str">"Deepgram STT"</span></div>
+      <div><span class="code-key">voice_out:</span> <span class="code-str">"ElevenLabs TTS"</span></div>
+      <div><span class="code-key">courses:</span> <span class="code-str">"Golfbert"</span></div>
+      <div><span class="code-key">multiplayer:</span> <span class="code-str">"Supabase"</span></div>
+      <div><span class="code-key">concurrency:</span> <span class="code-val">@MainActor</span></div>
+      <div><span class="code-key">architecture:</span> <span class="code-str">"offline-first"</span></div>
+      <div><span class="code-key">dependencies:</span> <span class="code-val">0</span></div>
+      <br>
+      <div class="code-comment">// Built for the golfer who deserves better.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST CTA -->
+<section class="waitlist-section" id="waitlist">
+  <div class="section-inner">
+    <div class="section-label">Early Access</div>
+    <div class="section-title">Ready to play <em>smarter?</em></div>
+    <p class="section-body">Be among the first to get AI caddie intelligence on your phone — and eventually your wrist.</p>
+    <div class="email-form">
+      <input type="email" class="email-input" placeholder="your@email.com" />
+      <button class="email-submit">Join Waitlist</button>
+    </div>
+    <p class="cta-note">No spam. Just updates when we're ready for you.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Shot<span>Sage</span></div>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 ShotSage LLC. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
