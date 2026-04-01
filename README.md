@@ -1,0 +1,1 @@
+# shotsage.ai-website
